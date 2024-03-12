@@ -8,10 +8,11 @@
 @* <h1>@ViewData["Title"]</h1>*@
 <div id="title" style="text-align: center;">Log in</div>
 <div class="row">
+    <div class="row d-flex justify-content-center">
     <div class="col-md-5">
         <section>
             <form class="b" id="account" method="post">
-                <h2>Use a local account to log in.</h2>
+                <h2>Admin account login</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
@@ -33,9 +34,10 @@
                 <div>
                     <button id="login-submit" type="submit">Log in</button>
                 </div>
-          
+                
             </form>
         </section>
+    </div>
     </div>
     
 </div>
