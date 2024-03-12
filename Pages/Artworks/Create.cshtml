@@ -7,59 +7,75 @@
 
 <div id="page_title">Create Artwork</div>
 
-<div class = "container">
+<div class="container">
     <div class="row">
-        <div class = "col-sm-12 bb">
+        <div class="col-sm-12 bb">
             <div class="col-md-4">
                 <form method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group" >
+                    <div class="form-group">
                         <label asp-for="Artwork.Title" class="control-label"></label>
-                        <input asp-for="Artwork.Title" class="form-control" value=@(Model.Title)/>
+                        <input asp-for="Artwork.Title" class="form-control" value=@(Model.Title) />
                         <span asp-validation-for="Artwork.Title" class="text-danger"></span>
                     </div>
-                    <div class="form-group" >
+                    <div class="form-group">
                         <label asp-for="Artwork.AccessionNumber" class="control-label"></label>
-                        <input asp-for="Artwork.AccessionNumber" class="form-control" value=@(Model.AccessionNumber)/>
+                        <input asp-for="Artwork.AccessionNumber" class="form-control" value=@(Model.AccessionNumber) />
                         <span asp-validation-for="Artwork.AccessionNumber" class="text-danger"></span>
                     </div>
-                    <div class="form-group" >
+                    <div class="form-group">
                         <label asp-for="Artwork.ImageLink" class="control-label"></label>
-                        <a id="popoverLink" >Help</a>
-                        <input asp-for="Artwork.ImageLink" class="form-control" value=@(Model.ImageURL)/>
+                        <a id="popoverLink">Help</a>
+                        <input asp-for="Artwork.ImageLink" class="form-control" />
                         <span asp-validation-for="Artwork.ImageLink" class="text-danger"></span>
                     </div>
+                    <div>
+                        <div >
+                            <form method="post" enctype="multipart/form-data">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="FileUpload.FormFile" class="control-label">Select File</label>
+                                    <input asp-for="FileUpload.FormFile" class="form-control" type="file"
+                                        value=@(Model.ImageURL) />
+                                    <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
+                                </div>
+                            </form>
+                          
+                        </div>
+                       
+
+                    </div>
                     
-                    <div class="form-group" >
+                    
+
+                    <div class="form-group">
                         <label asp-for="Artwork.Size" class="control-label"></label>
-                        <input asp-for="Artwork.Size" class="form-control" value=@(Model.Size)/>
+                        <input asp-for="Artwork.Size" class="form-control" value=@(Model.Size) />
                         <span asp-validation-for="Artwork.Size" class="text-danger"></span>
                     </div>
                     <div class="form-group" style="clear: both;">
                         <label asp-for="Artwork.MediumID" class="control-label"></label>
-                        <select asp-for="Artwork.MediumID" class="form-control"
-                                asp-items="@Model.MediumNameSL">
+                        <select asp-for="Artwork.MediumID" class="form-control" asp-items="@Model.MediumNameSL">
                             <option value="">-- Select Medium --</option>
                         </select>
                         <span asp-validation-for="Artwork.MediumID" class="text-danger" />
                     </div>
                     @* <button asp-page-handler="CreateMedium" formnovalidate>Create New Medium</button> *@
-                    <button class="s_add_button"  asp-page-handler="CreateMedium" formnovalidate>+</button>
+                    <button class="s_add_button" asp-page-handler="CreateMedium" formnovalidate>+</button>
 
                     <div class="form-group" style="clear: both;">
                         <label asp-for="Artwork.Status" class="control-label"></label>
-                        <input asp-for="Artwork.Status" class="form-control" value=@(Model.Status)/>
+                        <input asp-for="Artwork.Status" class="form-control" value=@(Model.Status) />
                         <span asp-validation-for="Artwork.Status" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Artwork.Donor" class="control-label"></label>
-                        <input asp-for="Artwork.Donor" class="form-control" value=@(Model.Donor)/>
+                        <input asp-for="Artwork.Donor" class="form-control" value=@(Model.Donor) />
                         <span asp-validation-for="Artwork.Donor" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Artwork.ArtistID" class="control-label"></label>
-                        <select asp-for="Artwork.ArtistID" class="form-control"
-                                asp-items="@Model.ArtistNameSL">
+                        <select asp-for="Artwork.ArtistID" class="form-control" asp-items="@Model.ArtistNameSL">
                             <option value="">-- Select Artist --</option>
                         </select>
                         <span asp-validation-for="Artwork.ArtistID" class="text-danger" />

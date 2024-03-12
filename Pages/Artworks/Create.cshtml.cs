@@ -1,3 +1,4 @@
+#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using FaulknerCountyMuseumGallery.Data;
 using FaulknerCountyMuseumGallery.Models;
 using FaulknerCountyMuseumGallery.Pages.Courses;
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace FaulknerCountyMuseumGallery.Pages.Artworks
 {
@@ -30,6 +32,14 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
         public string Size { get; set; }
         public string Status { get; set; }
         public string Donor { get; set; }
+        // Upload Image Files
+        public FileViewModel FileUpload { get; set; }
+
+        public class FileViewModel
+        {
+            public IFormFile FormFile { get; set; }
+        }
+
 
         public IActionResult OnGet(int? artistID, int? collectionID, int? mediumID,
             string title = "", string accessionNumber = "", string imageURL = "",
@@ -60,8 +70,18 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
                 var mediumID = HttpContext.Request.Form["Artwork.MediumID"];
                 var collectionID = HttpContext.Request.Form["Artwork.CollectionID"];
 
-                return RedirectToPage("/Artists/Create", new { prevPage = Request.Path, title,
-                accessionNumber, imageURL, status, donor, size, mediumID, collectionID });
+                return RedirectToPage("/Artists/Create", new
+                {
+                    prevPage = Request.Path,
+                    title,
+                    accessionNumber,
+                    imageURL,
+                    status,
+                    donor,
+                    size,
+                    mediumID,
+                    collectionID
+                });
             }
             else
             {
@@ -83,8 +103,18 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
                 var artistID = HttpContext.Request.Form["Artwork.ArtistID"];
                 var collectionID = HttpContext.Request.Form["Artwork.CollectionID"];
 
-                return RedirectToPage("/Mediums/Create", new { prevPage = Request.Path, title,
-                accessionNumber, imageURL, status, donor, size, artistID, collectionID});
+                return RedirectToPage("/Mediums/Create", new
+                {
+                    prevPage = Request.Path,
+                    title,
+                    accessionNumber,
+                    imageURL,
+                    status,
+                    donor,
+                    size,
+                    artistID,
+                    collectionID
+                });
             }
             else
             {
@@ -106,8 +136,18 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
                 var artistID = HttpContext.Request.Form["Artwork.ArtistID"];
                 var mediumID = HttpContext.Request.Form["Artwork.MediumID"];
 
-                return RedirectToPage("/Collections/Create", new { prevPage = Request.Path, title,
-                accessionNumber, imageURL, status, donor, size, mediumID, artistID });
+                return RedirectToPage("/Collections/Create", new
+                {
+                    prevPage = Request.Path,
+                    title,
+                    accessionNumber,
+                    imageURL,
+                    status,
+                    donor,
+                    size,
+                    mediumID,
+                    artistID
+                });
             }
             else
             {
@@ -138,11 +178,15 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
-        
+
             PopulateArtistsDropDownList(_context, emptyArtwork.ArtistID);
             PopulateMediumsDropDownList(_context, emptyArtwork.MediumID);
             PopulateCollectionsDropDownList(_context, emptyArtwork.CollectionID);
-            return Page();
+
+            
+                return Page();
+
+            
 
         }
     }
