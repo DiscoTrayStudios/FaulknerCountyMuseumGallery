@@ -18,6 +18,7 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
     public class CreateModel : ArtistMediumCollectionPageModel
     {
         private readonly FaulknerCountyMuseumGallery.Data.GalleryContext _context;
+        private readonly IWebHostEnvironment _hostenvironment;
 
         public CreateModel(FaulknerCountyMuseumGallery.Data.GalleryContext context)
         {
@@ -176,6 +177,17 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
             {
                 _context.Artworks.Add(emptyArtwork);
                 await _context.SaveChangesAsync();
+                
+                /*File upload into folder*/
+                /*https://learn.microsoft.com/en-us/answers/questions/807026/upload-image-to-asp-net-razor-page*/
+                if (FileUpload.FormFile.Length > 0)
+                {
+                    using (var stream = new FileStream(Path.Combine(_hostenvironment.WebRootPath, "uploadfiles", FileUpload.FormFile.FileName), FileMode.Create))
+                    {
+                        await FileUpload.FormFile.CopyToAsync(stream);
+                    }
+                }
+
                 return RedirectToPage("./Index");
             }
 
@@ -183,10 +195,10 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
             PopulateMediumsDropDownList(_context, emptyArtwork.MediumID);
             PopulateCollectionsDropDownList(_context, emptyArtwork.CollectionID);
 
-            
-                return Page();
 
-            
+            return Page();
+
+
 
         }
     }
