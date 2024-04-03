@@ -30,22 +30,27 @@
                         <span asp-validation-for="Artwork.ImageLink" class="text-danger"></span>
                     </div>
                     <div>
-                        <div >
-                            <form method="post" enctype="multipart/form-data">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <div class="form-group">
-                                    <label asp-for="FileUpload.FormFile" class="control-label">Select File</label>
-                                    <input asp-for="FileUpload.FormFile" class="form-control" type="file"/>
-                                    <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
-                                </div>
-                            </form>
-                          
-                        </div>
+                        @*New Image upload*@
+                        <input class="form-control" asp-for="Upload" type="file"
+                        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" />
                        
 
+                        @*
+                        <div >
+                        <form method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                        <label asp-for="FileUpload.FormFile" class="control-label">Select File</label>
+                        <input asp-for="FileUpload.FormFile" class="form-control" type="file"/>
+                        <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
+                        </div>
+                        </form>
+
+                        </div>
+                        *@
                     </div>
-                    
-                    
+
+
 
                     <div class="form-group">
                         <label asp-for="Artwork.Size" class="control-label"></label>
@@ -83,8 +88,7 @@
                     <button class="s_add_button" asp-page-handler="CreateArtist" formnovalidate>+</button>
                     <div class="form-group" style="clear: both;">
                         <label asp-for="Artwork.CollectionID" class="control-label"></label>
-                        <select asp-for="Artwork.CollectionID" class="form-control"
-                                asp-items="@Model.CollectionNameSL">
+                        <select asp-for="Artwork.CollectionID" class="form-control" asp-items="@Model.CollectionNameSL">
                             <option value="">-- Select Collection --</option>
                         </select>
                         <span asp-validation-for="Artwork.CollectionID" class="text-danger" />
@@ -102,5 +106,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

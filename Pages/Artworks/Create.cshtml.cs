@@ -10,6 +10,12 @@ using FaulknerCountyMuseumGallery.Data;
 using FaulknerCountyMuseumGallery.Models;
 using FaulknerCountyMuseumGallery.Pages.Courses;
 using Microsoft.AspNetCore.Authorization;
+//imports for image upload
+using ImageMagick;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Threading.Tasks;
 
 
 namespace FaulknerCountyMuseumGallery.Pages.Artworks
@@ -18,12 +24,6 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
     public class CreateModel : ArtistMediumCollectionPageModel
     {
         private readonly FaulknerCountyMuseumGallery.Data.GalleryContext _context;
-        private readonly IWebHostEnvironment _hostenvironment;
-
-        public CreateModel(FaulknerCountyMuseumGallery.Data.GalleryContext context)
-        {
-            _context = context;
-        }
 
         [BindProperty]
         public Artwork Artwork { get; set; }
@@ -33,6 +33,21 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
         public string Size { get; set; }
         public string Status { get; set; }
         public string Donor { get; set; }
+        //new image upload
+
+        public IFormFile Upload { get; set; }
+        private string imagesDir;
+        // not needed 
+        private MagickImage watermark;
+
+
+        public CreateModel(FaulknerCountyMuseumGallery.Data.GalleryContext context, IWebHostEnvironment environment)
+        {
+            _context = context;
+            imagesDir = Path.Combine(environment.WebRootPath, "images");
+        }
+
+        /*
         // Upload Image Files
         public FileViewModel FileUpload { get; set; }
 
@@ -40,7 +55,7 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
         {
             public IFormFile FormFile { get; set; }
         }
-
+        */
 
         public IActionResult OnGet(int? artistID, int? collectionID, int? mediumID,
             string title = "", string accessionNumber = "", string imageURL = "",
@@ -160,7 +175,35 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
         public async Task<IActionResult> OnPostAsync()
         {
             var emptyArtwork = new Artwork();
+            Console.Write("testing!!!!");
+            if (Upload != null)
+                {
+                    Console.Write("Inside upload");
+                    string extension = ".jpg";
+                    switch (Upload.ContentType)
+                    {
+                        case "image/png":
+                            extension = ".png";
+                            break;
+                        case "image/gif":
+                            extension = ".gif";
+                            break;
+                    }
 
+                    var fileName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + extension;
+                    var filePath = Path.Combine(imagesDir, fileName);
+
+                    // Add watermark to the uploaded image 
+                    // remove later
+                    using (var image = new MagickImage(Upload.OpenReadStream()))//filePath
+                    {
+                        image.Composite(watermark, Gravity.Southeast, CompositeOperator.Over);
+                        await image.WriteAsync(filePath);
+                    }
+                }
+                else{
+                    Console.Write("Upload is null "+ Upload +" see?");
+                }
             if (await TryUpdateModelAsync<Artwork>(
                 emptyArtwork,
                 "artwork",
@@ -175,11 +218,15 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
                 s => s.Status,
                 s => s.Donor))
             {
+                
                 _context.Artworks.Add(emptyArtwork);
                 await _context.SaveChangesAsync();
+
                 
+
                 /*File upload into folder*/
                 /*https://learn.microsoft.com/en-us/answers/questions/807026/upload-image-to-asp-net-razor-page*/
+                /*
                 if (FileUpload.FormFile.Length > 0)
                 {
                     using (var stream = new FileStream(Path.Combine(_hostenvironment.WebRootPath, "uploadfiles", FileUpload.FormFile.FileName), FileMode.Create))
@@ -187,6 +234,7 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
                         await FileUpload.FormFile.CopyToAsync(stream);
                     }
                 }
+                */
 
                 return RedirectToPage("./Index");
             }
