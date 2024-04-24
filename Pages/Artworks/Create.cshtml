@@ -23,12 +23,14 @@
                         <input asp-for="Artwork.AccessionNumber" class="form-control" value=@(Model.AccessionNumber) />
                         <span asp-validation-for="Artwork.AccessionNumber" class="text-danger"></span>
                     </div>
+                    
                     <div class="form-group">
                         <label asp-for="Artwork.ImageLink" class="control-label"></label>
                         <a id="popoverLink">Help</a>
                         <input asp-for="Artwork.ImageLink" class="form-control" />
                         <span asp-validation-for="Artwork.ImageLink" class="text-danger"></span>
                     </div>
+                    
                     <div>
                         <label>Image File Name</label>
                         <p>@Model.NamePath</p>
