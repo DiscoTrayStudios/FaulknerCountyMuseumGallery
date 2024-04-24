@@ -1,4 +1,4 @@
-@page
+@page "{imagePath?}"
 @model FaulknerCountyMuseumGallery.Pages.Artworks.CreateModel
 
 @{
@@ -30,27 +30,10 @@
                         <span asp-validation-for="Artwork.ImageLink" class="text-danger"></span>
                     </div>
                     <div>
-                        @*New Image upload*@
-                        <input class="form-control" asp-for="Upload" type="file"
-                        accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" />
-                       
-
-                        @*
-                        <div >
-                        <form method="post" enctype="multipart/form-data">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                        <label asp-for="FileUpload.FormFile" class="control-label">Select File</label>
-                        <input asp-for="FileUpload.FormFile" class="form-control" type="file"/>
-                        <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
-                        </div>
-                        </form>
-
-                        </div>
-                        *@
+                        <label>Image File Name</label>
+                        <p>@Model.NamePath</p>
                     </div>
-                    <a asp-page="Upload">Upload a new file</a><br/>
-
+                    
 
 
                     <div class="form-group">

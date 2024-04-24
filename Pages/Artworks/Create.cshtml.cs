@@ -34,32 +34,24 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
         public string Status { get; set; }
         public string Donor { get; set; }
         //new image upload
+        public string NamePath {get;set;}
 
-        public IFormFile Upload { get; set; }
-        private string imagesDir;
+        //public IFormFile Upload { get; set; }
+        //private string imagesDir;
         // not needed 
-        private MagickImage watermark;
+        //private MagickImage watermark;
+        
 
 
-        public CreateModel(FaulknerCountyMuseumGallery.Data.GalleryContext context, IWebHostEnvironment environment)
+        public CreateModel(FaulknerCountyMuseumGallery.Data.GalleryContext context)
         {
             _context = context;
-            imagesDir = Path.Combine(environment.WebRootPath, "images");
         }
 
-        /*
-        // Upload Image Files
-        public FileViewModel FileUpload { get; set; }
-
-        public class FileViewModel
-        {
-            public IFormFile FormFile { get; set; }
-        }
-        */
 
         public IActionResult OnGet(int? artistID, int? collectionID, int? mediumID,
             string title = "", string accessionNumber = "", string imageURL = "",
-            string size = "", string status = "", string donor = "")
+            string size = "", string status = "", string donor = "", string? imagePath = "")
         {
             Title = title;
             AccessionNumber = accessionNumber;
@@ -67,9 +59,22 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
             Size = size;
             Status = status;
             Donor = donor;
+            NamePath = imagePath;
             PopulateArtistsDropDownList(_context, artistID);
             PopulateMediumsDropDownList(_context, mediumID);
             PopulateCollectionsDropDownList(_context, collectionID);
+
+            
+            Console.Write("Here is the imagepathname: ", imagePath);
+            if (imagePath == null){
+                imagePath = "No file selected";
+                Console.Write("The image path isn't working" + imagePath);
+            }
+            else{
+                NamePath = imagePath.Replace("%2F", "/");
+                Console.Write("The image path IS working" + imagePath);
+                
+            }
             return Page();
         }
 
@@ -176,34 +181,7 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
         {
             var emptyArtwork = new Artwork();
             Console.Write("testing!!!!");
-            if (Upload != null)
-                {
-                    Console.Write("Inside upload");
-                    string extension = ".jpg";
-                    switch (Upload.ContentType)
-                    {
-                        case "image/png":
-                            extension = ".png";
-                            break;
-                        case "image/gif":
-                            extension = ".gif";
-                            break;
-                    }
-
-                    var fileName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + extension;
-                    var filePath = Path.Combine(imagesDir, fileName);
-
-                    // Add watermark to the uploaded image 
-                    // remove later
-                    using (var image = new MagickImage(Upload.OpenReadStream()))//filePath
-                    {
-                        image.Composite(watermark, Gravity.Southeast, CompositeOperator.Over);
-                        await image.WriteAsync(filePath);
-                    }
-                }
-                else{
-                    Console.Write("Upload is null "+ Upload +" see?");
-                }
+            
             if (await TryUpdateModelAsync<Artwork>(
                 emptyArtwork,
                 "artwork",
