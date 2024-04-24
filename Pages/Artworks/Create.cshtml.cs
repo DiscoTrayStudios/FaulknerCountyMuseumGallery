@@ -74,6 +74,7 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
                 relNamePath = imagePath.Replace("%2F", "/");
                 relNamePath = relNamePath.Substring(relNamePath.Length - 20);
                 
+                
                 Console.Write("here is the relative path" + relNamePath);
                 Console.Write("The image path IS working" + NamePath);
                 

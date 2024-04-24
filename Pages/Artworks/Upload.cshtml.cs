@@ -61,16 +61,16 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
                     //image.Composite(watermark, Gravity.Southeast, CompositeOperator.Over);
                     await image.WriteAsync(filePath);
                 }
-                Console.Write("This is filepath after saving it " + filePath);
                 Console.Write("here is the file path before sending it to new page " + filePath);
                 return RedirectToPage("Create", new {imagePath = filePath} );
+                // imagepath is the name of the var on the Create page
                 
             }
             else{
             Console.Write("something went wrong. here is the file path " + filePath);
             return RedirectToPage("Create", new {imagePath = filePath} );
             }
-            //Response.Redirect("Create?ImageFileName="+ filePath);
+            
         }
     }
 }
