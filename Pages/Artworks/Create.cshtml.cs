@@ -35,11 +35,8 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
         public string Donor { get; set; }
         //new image upload
         public string NamePath {get;set;}
-
-        //public IFormFile Upload { get; set; }
-        //private string imagesDir;
-        // not needed 
-        //private MagickImage watermark;
+        public string relNamePath{get;set;}
+        // this is the relative path of the file; for displaying on create page
         
 
 
@@ -60,6 +57,7 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
             Status = status;
             Donor = donor;
             NamePath = imagePath;
+            relNamePath = imagePath;
             PopulateArtistsDropDownList(_context, artistID);
             PopulateMediumsDropDownList(_context, mediumID);
             PopulateCollectionsDropDownList(_context, collectionID);
@@ -71,8 +69,13 @@ namespace FaulknerCountyMuseumGallery.Pages.Artworks
                 Console.Write("The image path isn't working" + imagePath);
             }
             else{
+                
                 NamePath = imagePath.Replace("%2F", "/");
-                Console.Write("The image path IS working" + imagePath);
+                relNamePath = imagePath.Replace("%2F", "/");
+                relNamePath = relNamePath.Substring(relNamePath.Length - 20);
+                
+                Console.Write("here is the relative path" + relNamePath);
+                Console.Write("The image path IS working" + NamePath);
                 
             }
             return Page();
